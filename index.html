@@ -57,22 +57,16 @@
       <div class="col-md-6">
         <div class="submit-area">
           <h4>Whithdraw</h4>
-          <input type="text" class="form-control" placeholder="$ amount you want to withdraw">
+          <input id="withdrawAmount" type="text" class="form-control" placeholder="$ amount you want to withdraw">
           <br>
-        <button id="withdraw-btn" class="btn btn-success">Withdraw</button>
+        <button id="addWithdraw" class="btn btn-success">Withdraw</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    //login button event handler
-    document.getElementById('login').addEventListener('click', function (event) {
-      //--use for display none
-      // event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode);
-      document.getElementById('login-area').style.display = 'none';
-      document.getElementById('transaction-area').style.display = 'block';
-    })
+    //-----------------function area-----------------------
 
     //deposit-withdraw span text updater function
     function updateSpanText(id,amountNumber){
@@ -82,22 +76,57 @@
       document.getElementById(id).innerHTML=totalDepositNumber;
     }
 
+    //take number from input tag function
+    function takeInputNumber(id){
+      const amount=document.getElementById(id).value;
+      const number=parseFloat(amount);
+      return number;
+    }
+
+    //keep empty input
+    function keepEmpty(id){
+      document.getElementById(id).value='';
+    }
+
+    //------------------handler area------------------
+
+      //login button event handler
+    document.getElementById('login').addEventListener('click', function (event) {
+      //--use for display none
+      // event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode);
+      document.getElementById('login-area').style.display = 'none';
+      document.getElementById('transaction-area').style.display = 'block';
+    })
+
     //deposit button event handler
     document.getElementById('addDeposit').addEventListener('click',function(){
-      const depositAmount=document.getElementById('depositAmount').value;
-      const depositNumber=parseFloat(depositAmount);
-
+      const depositNumber=takeInputNumber('depositAmount');      
       //update deposit status
       updateSpanText("currentDepositAmount",depositNumber);
-      document.getElementById('depositAmount').value='';
+      keepEmpty('depositAmount');
 
-      //update withdraw status after deposit
+      //update Balance status after deposit
       updateSpanText("currentBalanceAmount",depositNumber);
     })
 
-
-
     //withdraw button event handler
+    document.getElementById('addWithdraw').addEventListener('click',function(){
+      const withdrawNumber=takeInputNumber('withdrawAmount');
+
+      //update withdraw status
+      updateSpanText('currentWithdrawAmount',withdrawNumber);
+      keepEmpty('withdrawAmount');
+
+      //update Balance status after withdraw
+      updateSpanText('currentBalanceAmount',-1*withdrawNumber);
+      // const currentWithdrawAmount=document.getElementById('currentWithdrawAmount').innerText;
+      // const currentWithdrawNumber=parseFloat(currentWithdrawAmount);
+
+      // const currentBalanceAmount=document.getElementById('currentBalanceAmount').innerText;
+      // const currentBalanceNumber=parseFloat(currentBalanceAmount);
+      // const updateCurrentBalanceNumber=currentBalanceNumber-withdrawNumber;
+      // document.getElementById('currentBalanceAmount').innerText=updateCurrentBalanceNumber;
+    })
     
   </script>
 </body>
